@@ -27,6 +27,8 @@ aws dynamodb scan \
 
 商品カタログから商品区分が本である ID を取得する
 
+- コマンド
+
 ```
 aws dynamodb scan \
      --table-name ProductCatalog \
@@ -35,17 +37,49 @@ aws dynamodb scan \
      --query Items[].Id[]
 ```
 
-### データの条件つき＋表示する項目を指定＋テキスト形式で表示
+- 出力結果
 
-商品カタログから商品区分が本である ID を取得し、テキスト形式で表示する
+```
+[
+    {
+        "N": "102"
+    },
+    {
+        "N": "103"
+    },
+    {
+        "N": "101"
+    }
+]
+```
+
+### データの条件つき＋表示する項目を指定(複数)＋テキスト形式で表示
+
+商品カタログから商品区分が本であるデータの ID とタイトル、値段を取得し、テキスト形式で表示する
+
+- コマンド
 
 ```
 aws dynamodb scan \
      --table-name ProductCatalog \
      --filter-expression "ProductCategory = :sample" \
      --expression-attribute-values '{":sample":{"S":"Book"}}' \
-     --query Items[].Id[] \
+     --query 'Items[].{id:Id,title:Title,price:Price}'\
      --output text
+```
+
+- 出力結果
+
+```
+ID      102
+PRICE   20
+TITLE   Book 102 Title
+ID      103
+PRICE   2000
+TITLE   Book 103 Title
+ID      101
+PRICE   2
+TITLE   Book 101 Title
 ```
 
 ### AND 条件
@@ -206,7 +240,7 @@ aws dynamodb scan \
 
 ### ソート（表示項目が複数の場合）
 
-商品カタログからタイトルが 21-Bike-202"または"18-Bike-204"であるデータの ID と値段、ブランドを取得し、ID でソートしてテキスト形式で表示する
+商品カタログからタイトルが 21-Bike-202"または"18-Bike-204"であるデータの ID と値段、ブランドを取得し、ID でソートして JSON 形式で表示する
 
 - コマンド
 
