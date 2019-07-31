@@ -1,5 +1,68 @@
 # AWS CLI で DynamoDB を操作する
 
+## テーブルの設定の取得
+
+### テーブルの一覧
+
+- コマンド
+
+```
+aws dynamodb list-tables
+```
+
+- 出力結果
+
+```
+{
+    "TableNames": [
+        "ProductCatalog",
+        "sample-table",
+        "test-table"
+    ]
+}
+```
+
+### テーブルの設定値
+
+- コマンド
+
+```
+aws dynamodb describe-table --table-name ProductCatalog
+```
+
+- 出力結果
+
+```
+{
+    "Table": {
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "Id",
+                "AttributeType": "N"
+            }
+        ],
+        "TableName": "ProductCatalog",
+        "KeySchema": [
+            {
+                "AttributeName": "Id",
+                "KeyType": "HASH"
+            }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": 1564333991.55,
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0,
+            "ReadCapacityUnits": 5,
+            "WriteCapacityUnits": 5
+        },
+        "TableSizeBytes": 1075,
+        "ItemCount": 8,
+        "TableArn": "arn:aws:dynamodb:ap-northeast-1:xxxxxxxxxxxx:table/ProductCatalog",
+        "TableId": "55e6fe03-c2cb-4044-8669-c8290650cff4"
+    }
+}
+```
+
 ## データの取得
 
 公式にあるサンプルデータの ProductCatalog を使用
